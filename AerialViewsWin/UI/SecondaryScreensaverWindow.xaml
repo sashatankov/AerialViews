@@ -1,0 +1,19 @@
+<Window x:Class="AerialViews.UI.SecondaryScreensaverWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vlc="clr-namespace:LibVLCSharp.WPF;assembly=LibVLCSharp.WPF"
+        Title="Aerial Views Secondary"
+        WindowStyle="None"
+        ResizeMode="NoResize"
+        Topmost="True"
+        Background="Black"
+        Cursor="None"
+        ShowInTaskbar="False"
+        KeyDown="Window_KeyDown"
+        MouseDown="Window_MouseDown">
+
+    <Grid>
+        <!-- Video player (native HWND) -->
+        <vlc:VideoView x:Name="VideoView" MediaPlayer="{Binding MediaPlayer}" />
+    </Grid>
+</Window>

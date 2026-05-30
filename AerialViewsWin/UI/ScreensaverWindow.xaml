@@ -1,0 +1,25 @@
+<Window x:Class="AerialViews.UI.ScreensaverWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vlc="clr-namespace:LibVLCSharp.WPF;assembly=LibVLCSharp.WPF"
+        Title="Aerial Views"
+        WindowStyle="None"
+        WindowState="Maximized"
+        ResizeMode="NoResize"
+        Topmost="True"
+        Background="Black"
+        Cursor="None"
+        KeyDown="Window_KeyDown"
+        MouseMove="Window_MouseMove"
+        MouseDown="Window_MouseDown">
+
+    <Grid x:Name="MainGrid">
+        <!-- Video player (native HWND — always renders on top of WPF content) -->
+        <vlc:VideoView x:Name="VideoView" MediaPlayer="{Binding MediaPlayer}" />
+
+        <!-- Loading text (only shown before first video loads) -->
+        <TextBlock x:Name="LoadingText" Text="Loading Aerial Views..."
+                   FontSize="18" Foreground="#AAFFFFFF"
+                   HorizontalAlignment="Center" VerticalAlignment="Center" />
+    </Grid>
+</Window>
