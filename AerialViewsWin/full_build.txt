@@ -1,0 +1,33 @@
+c:\Users\isash\Documents\Projects\AerialViews\AerialViewsWin\Models\ScreensaverSettings.cs(145,27): error CS0103: The name 'Path' does not exist in the current context [c:\Users\isash\Documents\Projects\AerialViews\AerialViewsWin\AerialViewsWin.csproj]
+c:\Users\isash\Documents\Projects\AerialViews\AerialViewsWin\Models\ScreensaverSettings.cs(146,17): error CS0103: The name 'Directory' does not exist in the current context [c:\Users\isash\Documents\Projects\AerialViews\AerialViewsWin\AerialViewsWin.csproj]
+c:\Users\isash\Documents\Projects\AerialViews\AerialViewsWin\Models\ScreensaverSettings.cs(147,24): error CS0103: The name 'Path' does not exist in the current context [c:\Users\isash\Documents\Projects\AerialViews\AerialViewsWin\AerialViewsWin.csproj]
+c:\Users\isash\Documents\Projects\AerialViews\AerialViewsWin\Models\VideoAsset.cs(99,62): error CS0103: The name 'Path' does not exist in the current context [c:\Users\isash\Documents\Projects\AerialViews\AerialViewsWin\AerialViewsWin.csproj]
+c:\Users\isash\Documents\Projects\AerialViews\AerialViewsWin\Models\VideoAsset.cs(100,61): error CS0103: The name 'Path' does not exist in the current context [c:\Users\isash\Documents\Projects\AerialViews\AerialViewsWin\AerialViewsWin.csproj]
+c:\Users\isash\Documents\Projects\AerialViews\AerialViewsWin\Models\VideoAsset.cs(101,61): error CS0103: The name 'Path' does not exist in the current context [c:\Users\isash\Documents\Projects\AerialViews\AerialViewsWin\AerialViewsWin.csproj]
+c:\Users\isash\Documents\Projects\AerialViews\AerialViewsWin\Models\VideoAsset.cs(102,59): error CS0103: The name 'Path' does not exist in the current context [c:\Users\isash\Documents\Projects\AerialViews\AerialViewsWin\AerialViewsWin.csproj]
+c:\Users\isash\Documents\Projects\AerialViews\AerialViewsWin\Models\VideoAsset.cs(103,59): error CS0103: The name 'Path' does not exist in the current context [c:\Users\isash\Documents\Projects\AerialViews\AerialViewsWin\AerialViewsWin.csproj]
+c:\Users\isash\Documents\Projects\AerialViews\AerialViewsWin\Models\ScreensaverSettings.cs(155,21): error CS0103: The name 'File' does not exist in the current context [c:\Users\isash\Documents\Projects\AerialViews\AerialViewsWin\AerialViewsWin.csproj]
+c:\Users\isash\Documents\Projects\AerialViews\AerialViewsWin\Models\ScreensaverSettings.cs(157,32): error CS0103: The name 'File' does not exist in the current context [c:\Users\isash\Documents\Projects\AerialViews\AerialViewsWin\AerialViewsWin.csproj]
+c:\Users\isash\Documents\Projects\AerialViews\AerialViewsWin\Models\ScreensaverSettings.cs(173,17): error CS0103: The name 'File' does not exist in the current context [c:\Users\isash\Documents\Projects\AerialViews\AerialViewsWin\AerialViewsWin.csproj]
+c:\Users\isash\Documents\Projects\AerialViews\AerialViewsWin\Providers\VideoProvider.cs(180,28): error CS0103: The name 'Path' does not exist in the current context [c:\Users\isash\Documents\Projects\AerialViews\AerialViewsWin\AerialViewsWin.csproj]
+c:\Users\isash\Documents\Projects\AerialViews\AerialViewsWin\Providers\VideoProvider.cs(110,36): error CS0246: The type or namespace name 'StreamReader' could not be found (are you missing a using directive or an assembly reference?) [c:\Users\isash\Documents\Projects\AerialViews\AerialViewsWin\AerialViewsWin.csproj]
+
+Build FAILED.
+
+c:\Users\isash\Documents\Projects\AerialViews\AerialViewsWin\Models\ScreensaverSettings.cs(145,27): error CS0103: The name 'Path' does not exist in the current context [c:\Users\isash\Documents\Projects\AerialViews\AerialViewsWin\AerialViewsWin.csproj]
+c:\Users\isash\Documents\Projects\AerialViews\AerialViewsWin\Models\ScreensaverSettings.cs(146,17): error CS0103: The name 'Directory' does not exist in the current context [c:\Users\isash\Documents\Projects\AerialViews\AerialViewsWin\AerialViewsWin.csproj]
+c:\Users\isash\Documents\Projects\AerialViews\AerialViewsWin\Models\ScreensaverSettings.cs(147,24): error CS0103: The name 'Path' does not exist in the current context [c:\Users\isash\Documents\Projects\AerialViews\AerialViewsWin\AerialViewsWin.csproj]
+c:\Users\isash\Documents\Projects\AerialViews\AerialViewsWin\Models\VideoAsset.cs(99,62): error CS0103: The name 'Path' does not exist in the current context [c:\Users\isash\Documents\Projects\AerialViews\AerialViewsWin\AerialViewsWin.csproj]
+c:\Users\isash\Documents\Projects\AerialViews\AerialViewsWin\Models\VideoAsset.cs(100,61): error CS0103: The name 'Path' does not exist in the current context [c:\Users\isash\Documents\Projects\AerialViews\AerialViewsWin\AerialViewsWin.csproj]
+c:\Users\isash\Documents\Projects\AerialViews\AerialViewsWin\Models\VideoAsset.cs(101,61): error CS0103: The name 'Path' does not exist in the current context [c:\Users\isash\Documents\Projects\AerialViews\AerialViewsWin\AerialViewsWin.csproj]
+c:\Users\isash\Documents\Projects\AerialViews\AerialViewsWin\Models\VideoAsset.cs(102,59): error CS0103: The name 'Path' does not exist in the current context [c:\Users\isash\Documents\Projects\AerialViews\AerialViewsWin\AerialViewsWin.csproj]
+c:\Users\isash\Documents\Projects\AerialViews\AerialViewsWin\Models\VideoAsset.cs(103,59): error CS0103: The name 'Path' does not exist in the current context [c:\Users\isash\Documents\Projects\AerialViews\AerialViewsWin\AerialViewsWin.csproj]
+c:\Users\isash\Documents\Projects\AerialViews\AerialViewsWin\Models\ScreensaverSettings.cs(155,21): error CS0103: The name 'File' does not exist in the current context [c:\Users\isash\Documents\Projects\AerialViews\AerialViewsWin\AerialViewsWin.csproj]
+c:\Users\isash\Documents\Projects\AerialViews\AerialViewsWin\Models\ScreensaverSettings.cs(157,32): error CS0103: The name 'File' does not exist in the current context [c:\Users\isash\Documents\Projects\AerialViews\AerialViewsWin\AerialViewsWin.csproj]
+c:\Users\isash\Documents\Projects\AerialViews\AerialViewsWin\Models\ScreensaverSettings.cs(173,17): error CS0103: The name 'File' does not exist in the current context [c:\Users\isash\Documents\Projects\AerialViews\AerialViewsWin\AerialViewsWin.csproj]
+c:\Users\isash\Documents\Projects\AerialViews\AerialViewsWin\Providers\VideoProvider.cs(180,28): error CS0103: The name 'Path' does not exist in the current context [c:\Users\isash\Documents\Projects\AerialViews\AerialViewsWin\AerialViewsWin.csproj]
+c:\Users\isash\Documents\Projects\AerialViews\AerialViewsWin\Providers\VideoProvider.cs(110,36): error CS0246: The type or namespace name 'StreamReader' could not be found (are you missing a using directive or an assembly reference?) [c:\Users\isash\Documents\Projects\AerialViews\AerialViewsWin\AerialViewsWin.csproj]
+    0 Warning(s)
+    13 Error(s)
+
+Time Elapsed 00:00:00.68
