@@ -18,6 +18,8 @@ namespace AerialViews.UI
         private LibVLC? _libVLC;
         private LibVLCSharp.Shared.MediaPlayer? _mediaPlayer;
         private OverlayWindow? _overlayWindow;
+        private Media? _currentVlcMedia;
+        private readonly object _playerLock = new();
         private bool _isClosing;
 
         /// <summary>
@@ -91,13 +93,21 @@ namespace AerialViews.UI
                     ? new Media(_libVLC, new Uri(resolvedUri))
                     : new Media(_libVLC, resolvedUri);
 
-                // Apply same options as primary
-                if (settings.Playlist.MaxVideoLengthSeconds > 0)
+                // Apply same options as primary: max length is enforced by the
+                // primary's pre-emptive fade (no :stop-time — see primary), and
+                // :stop-time only bounds the loop segment in loop mode.
+                if (settings.Playlist.MaxVideoLengthSeconds > 0 && settings.Playlist.LoopUntilSkipped)
                     vlcMedia.AddOption($":stop-time={settings.Playlist.MaxVideoLengthSeconds}");
 
                 // Use the same random start time as primary (for sync)
                 if (randomStartTime != null)
                     vlcMedia.AddOption($":start-time={randomStartTime}");
+
+                // Loop natively inside VLC, same as the primary screen
+                if (settings.Playlist.LoopUntilSkipped)
+                    vlcMedia.AddOption(":input-repeat=65535");
+
+                _currentVlcMedia = vlcMedia;
 
                 _mediaPlayer.SetRate((float)settings.Playlist.PlaybackSpeed);
                 _mediaPlayer.Play(vlcMedia);
@@ -106,15 +116,31 @@ namespace AerialViews.UI
         }
 
         /// <summary>
-        /// Stops current video playback.
+        /// Stops current video playback off the UI thread (VLC Stop blocks on
+        /// VLC threads that need the UI message pump). The primary window
+        /// awaits the returned task before starting the next video, so a
+        /// pending Stop can never race the next PlayMedia.
         /// </summary>
-        public void StopPlayback()
+        public Task StopPlaybackAsync()
         {
-            if (_mediaPlayer == null || _isClosing) return;
+            if (_mediaPlayer == null || _isClosing) return Task.CompletedTask;
 
-            // VLC Stop must run off UI thread to avoid deadlock
             var mp = _mediaPlayer;
-            Task.Run(() => { try { mp?.Stop(); } catch { } });
+            var oldMedia = _currentVlcMedia;
+            _currentVlcMedia = null;
+
+            return Task.Run(() =>
+            {
+                lock (_playerLock)
+                {
+                    try
+                    {
+                        mp?.Stop();
+                        oldMedia?.Dispose();
+                    }
+                    catch { }
+                }
+            });
         }
 
         /// <summary>
@@ -165,12 +191,17 @@ namespace AerialViews.UI
 
             var mp = _mediaPlayer;
             var vlc = _libVLC;
+            var media = _currentVlcMedia;
             _mediaPlayer = null;
             _libVLC = null;
+            _currentVlcMedia = null;
 
             Task.Run(() =>
             {
-                try { mp?.Stop(); mp?.Dispose(); vlc?.Dispose(); } catch { }
+                lock (_playerLock)
+                {
+                    try { mp?.Stop(); mp?.Dispose(); media?.Dispose(); vlc?.Dispose(); } catch { }
+                }
             });
 
             Close();

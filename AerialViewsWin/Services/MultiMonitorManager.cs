@@ -111,14 +111,16 @@ namespace AerialViews.Services
         }
 
         /// <summary>
-        /// Stops video playback on all secondary screens.
+        /// Stops video playback on all secondary screens. The primary window
+        /// awaits this before playing the next video so no secondary is still
+        /// tearing down its previous media.
         /// </summary>
-        public static void StopSecondaries()
+        public static Task StopSecondariesAsync()
         {
-            foreach (var sw in _secondaryWindows)
-            {
-                sw.StopPlayback();
-            }
+            var windows = _secondaryWindows.ToArray();
+            return windows.Length == 0
+                ? Task.CompletedTask
+                : Task.WhenAll(windows.Select(sw => sw.StopPlaybackAsync()));
         }
 
         /// <summary>
