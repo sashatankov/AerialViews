@@ -1,7 +1,6 @@
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Interop;
-using System.Windows.Media.Animation;
 using AerialViews.Models;
 using AerialViews.Services;
 using LibVLCSharp.Shared;
@@ -11,16 +10,21 @@ namespace AerialViews.UI
     /// <summary>
     /// Lightweight screensaver window for secondary monitors.
     /// Plays the same video as the primary screen but without text overlays or progress bar.
-    /// Uses its own LibVLC instance and OverlayWindow for fade/brightness effects.
+    /// Uses its own LibVLC instance and a VideoView-hosted overlay for fade/brightness effects.
     /// </summary>
     public partial class SecondaryScreensaverWindow : Window
     {
         private LibVLC? _libVLC;
         private LibVLCSharp.Shared.MediaPlayer? _mediaPlayer;
-        private OverlayWindow? _overlayWindow;
+        private readonly VideoOverlay _overlayWindow;
         private Media? _currentVlcMedia;
         private readonly object _playerLock = new();
         private bool _isClosing;
+        private int _playToken;
+        private bool _firstFrameReady;
+        private bool _fadeInRequested;
+        private int _fadeInDurationMs;
+        private EventHandler<MediaPlayerTimeChangedEventArgs>? _firstFrameHandler;
 
         /// <summary>
         /// Physical pixel bounds of the target screen. Set before Show().
@@ -33,6 +37,7 @@ namespace AerialViews.UI
         public SecondaryScreensaverWindow()
         {
             InitializeComponent();
+            _overlayWindow = Overlay;
             DataContext = this;
             Loaded += OnLoaded;
         }
@@ -51,24 +56,11 @@ namespace AerialViews.UI
 
             VideoView.MediaPlayer = _mediaPlayer;
 
-            // Create overlay window for fade and brightness effects (no text overlays)
-            _overlayWindow = new OverlayWindow();
-            _overlayWindow.Left = ScreenBounds.Left;
-            _overlayWindow.Top = ScreenBounds.Top;
-            _overlayWindow.Width = ScreenBounds.Width;
-            _overlayWindow.Height = ScreenBounds.Height;
-
             // Hide text overlays and progress bar — secondary screens show video only
             _overlayWindow.OverlayGrid.Visibility = Visibility.Collapsed;
             _overlayWindow.VideoProgressBar.Visibility = Visibility.Collapsed;
-
-            _overlayWindow.Loaded += (s, args) =>
-            {
-                var overlayHwnd = new WindowInteropHelper(_overlayWindow).Handle;
-                MultiMonitorManager.SetWindowPosition(overlayHwnd, ScreenBounds);
-            };
-
-            _overlayWindow.Show();
+            _overlayWindow.LoadingText.Visibility = Visibility.Collapsed;
+            _overlayWindow.SetBlack();
         }
 
         /// <summary>
@@ -78,12 +70,15 @@ namespace AerialViews.UI
         {
             if (_libVLC == null || _mediaPlayer == null || _isClosing) return;
 
-            // Reset fade overlay to black (opaque) while loading
-            if (_overlayWindow != null)
+            var token = ++_playToken;
+            _firstFrameReady = false;
+            _fadeInRequested = false;
+            _overlayWindow.SetBlack();
+
+            if (_firstFrameHandler != null)
             {
-                _overlayWindow.FadeOverlay.BeginAnimation(
-                    UIElement.OpacityProperty, null);
-                _overlayWindow.FadeOverlay.Opacity = 1;
+                _mediaPlayer.TimeChanged -= _firstFrameHandler;
+                _firstFrameHandler = null;
             }
 
             try
@@ -109,10 +104,39 @@ namespace AerialViews.UI
 
                 _currentVlcMedia = vlcMedia;
 
-                _mediaPlayer.SetRate((float)settings.Playlist.PlaybackSpeed);
-                _mediaPlayer.Play(vlcMedia);
+                var mp = _mediaPlayer;
+                EventHandler<MediaPlayerTimeChangedEventArgs>? firstFrameHandler = null;
+                firstFrameHandler = (s, e) =>
+                {
+                    if (firstFrameHandler != null)
+                        mp.TimeChanged -= firstFrameHandler;
+
+                    Dispatcher.BeginInvoke(() => MarkFirstFrameReady(token, firstFrameHandler));
+                };
+                _firstFrameHandler = firstFrameHandler;
+                mp.TimeChanged += firstFrameHandler;
+
+                mp.SetRate((float)settings.Playlist.PlaybackSpeed);
+                mp.Play(vlcMedia);
             }
             catch { }
+        }
+
+        private void MarkFirstFrameReady(
+            int token,
+            EventHandler<MediaPlayerTimeChangedEventArgs>? handler)
+        {
+            if (_firstFrameHandler == handler)
+                _firstFrameHandler = null;
+
+            if (_isClosing || token != _playToken) return;
+
+            _firstFrameReady = true;
+            if (_fadeInRequested)
+            {
+                _fadeInRequested = false;
+                _overlayWindow.FadeFromBlack(_fadeInDurationMs);
+            }
         }
 
         /// <summary>
@@ -128,6 +152,16 @@ namespace AerialViews.UI
             var mp = _mediaPlayer;
             var oldMedia = _currentVlcMedia;
             _currentVlcMedia = null;
+            _playToken++;
+            _firstFrameReady = false;
+            _fadeInRequested = false;
+            _overlayWindow.SetBlack();
+
+            if (_firstFrameHandler != null)
+            {
+                mp.TimeChanged -= _firstFrameHandler;
+                _firstFrameHandler = null;
+            }
 
             return Task.Run(() =>
             {
@@ -148,9 +182,14 @@ namespace AerialViews.UI
         /// </summary>
         public void FadeIn(int durationMs)
         {
-            if (_overlayWindow == null || _isClosing) return;
-            var fadeIn = new DoubleAnimation(1, 0, TimeSpan.FromMilliseconds(durationMs));
-            _overlayWindow.FadeOverlay.BeginAnimation(UIElement.OpacityProperty, fadeIn);
+            if (_isClosing) return;
+
+            _fadeInRequested = true;
+            _fadeInDurationMs = durationMs;
+            if (!_firstFrameReady) return;
+
+            _fadeInRequested = false;
+            _overlayWindow.FadeFromBlack(durationMs);
         }
 
         /// <summary>
@@ -158,9 +197,10 @@ namespace AerialViews.UI
         /// </summary>
         public void FadeOut(int durationMs)
         {
-            if (_overlayWindow == null || _isClosing) return;
-            var fadeOut = new DoubleAnimation(0, 1, TimeSpan.FromMilliseconds(durationMs));
-            _overlayWindow.FadeOverlay.BeginAnimation(UIElement.OpacityProperty, fadeOut);
+            if (_isClosing) return;
+
+            _fadeInRequested = false;
+            _overlayWindow.FadeToBlack(durationMs);
         }
 
         /// <summary>
@@ -168,8 +208,6 @@ namespace AerialViews.UI
         /// </summary>
         public void ApplyAppearance(ScreensaverSettings settings)
         {
-            if (_overlayWindow == null) return;
-
             if (settings.Appearance.VideoBrightness < 100)
                 _overlayWindow.BrightnessOverlay.Opacity = 1.0 - (settings.Appearance.VideoBrightness / 100.0);
 
@@ -187,11 +225,16 @@ namespace AerialViews.UI
             if (_isClosing) return;
             _isClosing = true;
 
-            _overlayWindow?.Close();
-
             var mp = _mediaPlayer;
             var vlc = _libVLC;
             var media = _currentVlcMedia;
+            _playToken++;
+            if (mp != null && _firstFrameHandler != null)
+                mp.TimeChanged -= _firstFrameHandler;
+            _firstFrameHandler = null;
+            _overlayWindow.SetBlack();
+            VideoView.MediaPlayer = null;
+            VideoView.Dispose();
             _mediaPlayer = null;
             _libVLC = null;
             _currentVlcMedia = null;

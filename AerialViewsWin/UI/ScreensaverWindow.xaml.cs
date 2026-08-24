@@ -2,7 +2,6 @@ using System.IO;
 using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Input;
-using System.Windows.Media.Animation;
 using System.Windows.Threading;
 using AerialViews.Models;
 using AerialViews.Providers;
@@ -32,7 +31,7 @@ namespace AerialViews.UI
         private POINT? _initialCursorPos;
         private bool _isClosing = false;
         private DateTime _startTime;
-        private OverlayWindow? _overlayWindow;
+        private readonly VideoOverlay _overlayWindow;
 
         // Transition state machine. Mutated only on the UI thread; VLC event
         // handlers marshal via Dispatcher and validate _playToken before acting.
@@ -63,6 +62,7 @@ namespace AerialViews.UI
         public ScreensaverWindow()
         {
             InitializeComponent();
+            _overlayWindow = Overlay;
             DataContext = this;
             Loaded += OnLoaded;
         }
@@ -77,15 +77,6 @@ namespace AerialViews.UI
             _libVLC = new LibVLC();
             CreateMediaPlayer();
 
-            // Create and show the overlay window
-            _overlayWindow = new OverlayWindow();
-            _overlayWindow.Left = Left;
-            _overlayWindow.Top = Top;
-            _overlayWindow.Width = ActualWidth;
-            _overlayWindow.Height = ActualHeight;
-            _overlayWindow.WindowState = WindowState.Maximized;
-            _overlayWindow.Show();
-
             // Apply appearance settings
             ApplyAppearanceSettings();
 
@@ -97,12 +88,12 @@ namespace AerialViews.UI
 
             if (_playlistManager.Count > 0)
             {
-                LoadingText.Visibility = Visibility.Collapsed;
+                _overlayWindow.LoadingText.Visibility = Visibility.Collapsed;
                 PlayNext();
             }
             else
             {
-                LoadingText.Text = "No videos available. Please check your settings.";
+                _overlayWindow.LoadingText.Text = "No videos available. Please check your settings.";
             }
 
             // Start overlay update timer
@@ -216,13 +207,8 @@ namespace AerialViews.UI
             var token = ++_playToken;
             SetState(TransitionState.Loading, $"play {media.Uri}");
 
-            // Ensure the fade overlay is fully opaque (black screen) while loading
-            if (_overlayWindow != null)
-            {
-                _overlayWindow.FadeOverlay.BeginAnimation(
-                    System.Windows.UIElement.OpacityProperty, null);
-                _overlayWindow.FadeOverlay.Opacity = 1;
-            }
+            // Never expose VLC's native surface while it clears and loads new media.
+            _overlayWindow?.SetBlack();
 
             try
             {
@@ -310,20 +296,17 @@ namespace AerialViews.UI
         {
             if (_overlayWindow == null) return;
 
-            // Fade the black overlay from opaque to transparent, revealing the video underneath
-            var fadeIn = new DoubleAnimation(1, 0,
-                TimeSpan.FromMilliseconds(_settings.Appearance.MediaFadeInDuration));
-            fadeIn.Completed += (s, e) =>
+            // Reveal only after VLC has presented the new video's first frame.
+            _overlayWindow.FadeFromBlack(_settings.Appearance.MediaFadeInDuration, () =>
             {
                 if (_isClosing || token != _playToken) return;
                 if (_state == TransitionState.FadingIn)
                 {
                     SetState(TransitionState.Playing, "fade-in complete");
                 }
-            };
-            _overlayWindow.FadeOverlay.BeginAnimation(System.Windows.UIElement.OpacityProperty, fadeIn);
+            });
 
-            // Fade in secondary screens in sync
+            // Ready secondary screens fade now; slower ones remain black until ready.
             MultiMonitorManager.FadeInSecondaries(_settings.Appearance.MediaFadeInDuration);
         }
 
@@ -351,12 +334,10 @@ namespace AerialViews.UI
             // Fade out secondary screens in sync
             MultiMonitorManager.FadeOutSecondaries(_settings.Appearance.MediaFadeOutDuration);
 
-            // Start from the overlay's current opacity so a fade-out that
-            // interrupts a running fade-in doesn't snap to transparent first.
-            var fadeOut = new DoubleAnimation(_overlayWindow.FadeOverlay.Opacity, 1,
-                TimeSpan.FromMilliseconds(_settings.Appearance.MediaFadeOutDuration));
-            fadeOut.Completed += (s, e) => onCompleted();
-            _overlayWindow.FadeOverlay.BeginAnimation(System.Windows.UIElement.OpacityProperty, fadeOut);
+            // Animate from the current value and commit opaque black before Stop().
+            _overlayWindow.FadeToBlack(
+                _settings.Appearance.MediaFadeOutDuration,
+                onCompleted);
         }
 
         private void OnFadeOutCompleted()
@@ -373,6 +354,8 @@ namespace AerialViews.UI
         // UI thread. The screen is fully black here, so the latency is invisible.
         private void StopPlayersThen(Action continuation)
         {
+            _overlayWindow.SetBlack();
+
             var mp = _mediaPlayer;
             var oldMedia = _currentVlcMedia;
             _currentVlcMedia = null;
@@ -416,6 +399,7 @@ namespace AerialViews.UI
             if (_libVLC == null || _isClosing) return;
 
             Log("Watchdog: Stop() wedged for >8s — replacing media player");
+            _overlayWindow.SetBlack();
 
             if (_mediaPlayer != null)
             {
@@ -440,12 +424,7 @@ namespace AerialViews.UI
             _revealTimeoutTimer?.Stop();
 
             // Snap to black (the failed video may be showing garbage or nothing)
-            if (_overlayWindow != null)
-            {
-                _overlayWindow.FadeOverlay.BeginAnimation(
-                    System.Windows.UIElement.OpacityProperty, null);
-                _overlayWindow.FadeOverlay.Opacity = 1;
-            }
+            _overlayWindow?.SetBlack();
 
             SetState(TransitionState.Stopping, "playback failure");
             StopPlayersThen(() =>
@@ -660,12 +639,12 @@ namespace AerialViews.UI
             // Close all secondary screensaver windows
             MultiMonitorManager.CloseSecondaries();
 
-            _overlayWindow?.Close();
-
             // Detach VLC from the VideoView to release the HWND immediately
             var mp = _mediaPlayer;
             var vlc = _libVLC;
             var media = _currentVlcMedia;
+            VideoView.MediaPlayer = null;
+            VideoView.Dispose();
             _mediaPlayer = null;
             _libVLC = null;
             _currentVlcMedia = null;
