@@ -15,6 +15,7 @@ namespace AerialViews.UI
         public SettingsWindow()
         {
             InitializeComponent();
+            AppleVideosGroup.Header = $"Apple Videos ({VideoProvider.CreateApple().AssetCount} videos)";
             _settings = ScreensaverSettings.Load();
 
             PopulateOverlayComboBoxes();
@@ -371,7 +372,7 @@ namespace AerialViews.UI
 
         private void DownloadApple_Click(object sender, RoutedEventArgs e) =>
             StartDownload(AerialMediaSource.Apple, _settings.AppleSource,
-                "tvos15.json", "tvos15_strings.json",
+                VideoProvider.AppleManifestResource, VideoProvider.AppleStringsResource,
                 DownloadAppleBtn, CancelAppleBtn, AppleProgress, AppleDownloadStatus, AppleCacheInfo);
 
         private void DownloadAmazon_Click(object sender, RoutedEventArgs e) =>
