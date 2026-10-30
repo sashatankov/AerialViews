@@ -1,5 +1,6 @@
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using AerialViews.Models;
 using AerialViews.Providers;
 using AerialViews.Services;
@@ -23,6 +24,51 @@ namespace AerialViews.UI
             // Wire up slider events for label updates
             VideoBrightness.ValueChanged += (s, e) => BrightnessLabel.Text = $"{(int)VideoBrightness.Value}%";
             VideoVolume.ValueChanged += (s, e) => VolumeLabel.Text = $"{(int)VideoVolume.Value}%";
+
+            // Subscribe after loading so initialization never overwrites saved preferences.
+            AddHandler(ToggleButton.CheckedEvent, new RoutedEventHandler(SettingsChanged));
+            AddHandler(ToggleButton.UncheckedEvent, new RoutedEventHandler(SettingsChanged));
+            AddHandler(Selector.SelectionChangedEvent, new SelectionChangedEventHandler((s, e) =>
+            {
+                if (e.OriginalSource is ComboBox) SettingsChanged(s, e);
+            }));
+            AddHandler(TextBox.TextChangedEvent, new TextChangedEventHandler((s, e) => SettingsChanged(s, e)));
+            AddHandler(RangeBase.ValueChangedEvent, new RoutedPropertyChangedEventHandler<double>((s, e) =>
+            {
+                if (e.OriginalSource is Slider) SettingsChanged(s, e);
+            }));
+        }
+
+        private void SettingsChanged(object sender, RoutedEventArgs e)
+        {
+            TrySaveSettings();
+        }
+
+        private bool TrySaveSettings()
+        {
+            try
+            {
+                SaveSettingsFromUI();
+                _settings.Save();
+                SaveStatus.Text = "Changes saved automatically.";
+                return true;
+            }
+            catch (Exception ex)
+            {
+                SaveStatus.Text = $"Changes could not be saved: {ex.Message}";
+                return false;
+            }
+        }
+
+        protected override void OnClosing(System.ComponentModel.CancelEventArgs e)
+        {
+            if (!TrySaveSettings())
+            {
+                e.Cancel = true;
+                MessageBox.Show(this, SaveStatus.Text, "Unable to Save Settings",
+                    MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            base.OnClosing(e);
         }
 
         private void PopulateOverlayComboBoxes()
@@ -145,12 +191,12 @@ namespace AerialViews.UI
             // Sources
             _settings.AppleSource.Enabled = AppleEnabled.IsChecked ?? true;
             _settings.AppleSource.Quality = ParseEnum<VideoQuality>(GetComboTag(AppleQuality));
-            _settings.AppleSource.Scenes = GetCheckedScenes("Apple");
+            _settings.AppleSource.Scenes = GetCheckedScenes("Apple", _settings.AppleSource.Scenes);
             _settings.AppleSource.TimesOfDay = GetCheckedTimes("Apple");
 
             _settings.AmazonSource.Enabled = AmazonEnabled.IsChecked ?? true;
             _settings.AmazonSource.Quality = ParseEnum<VideoQuality>(GetComboTag(AmazonQuality));
-            _settings.AmazonSource.Scenes = GetCheckedScenes("Amazon");
+            _settings.AmazonSource.Scenes = GetCheckedScenes("Amazon", _settings.AmazonSource.Scenes);
             _settings.AmazonSource.TimesOfDay = GetCheckedTimes("Amazon");
 
             _settings.Comm1Source.Enabled = Comm1Enabled.IsChecked ?? true;
@@ -214,21 +260,18 @@ namespace AerialViews.UI
             _settings.Playlist.RandomStartPosition = RandomStartPos.IsChecked ?? false;
         }
 
-        private HashSet<SceneType> GetCheckedScenes(string prefix)
+        private HashSet<SceneType> GetCheckedScenes(string prefix, HashSet<SceneType> existingScenes)
         {
-            var scenes = new HashSet<SceneType>();
-            CheckBox? FindCheckBox(string name)
+            // Keep filters that have no control in this source's settings panel.
+            var scenes = new HashSet<SceneType>(existingScenes);
+            foreach (var scene in Enum.GetValues<SceneType>())
             {
-                return FindName($"{prefix}{name}") as CheckBox;
+                if (FindName($"{prefix}{scene}") is CheckBox checkBox)
+                {
+                    if (checkBox.IsChecked == true) scenes.Add(scene);
+                    else scenes.Remove(scene);
+                }
             }
-
-            if (FindCheckBox("Nature")?.IsChecked ?? false) scenes.Add(SceneType.Nature);
-            if (FindCheckBox("Beach")?.IsChecked ?? false) scenes.Add(SceneType.Beach);
-            if (FindCheckBox("City")?.IsChecked ?? false) scenes.Add(SceneType.City);
-            if (FindCheckBox("Sea")?.IsChecked ?? false) scenes.Add(SceneType.Sea);
-            if (FindCheckBox("Space")?.IsChecked ?? false) scenes.Add(SceneType.Space);
-            if (FindCheckBox("Countryside")?.IsChecked ?? false) scenes.Add(SceneType.Countryside);
-            if (FindCheckBox("Patterns")?.IsChecked ?? false) scenes.Add(SceneType.Patterns);
 
             return scenes;
         }
@@ -274,22 +317,14 @@ namespace AerialViews.UI
             return default;
         }
 
-        private void OK_Click(object sender, RoutedEventArgs e)
+        private void Close_Click(object sender, RoutedEventArgs e)
         {
-            SaveSettingsFromUI();
-            _settings.Save();
-            Application.Current.Shutdown();
-        }
-
-        private void Cancel_Click(object sender, RoutedEventArgs e)
-        {
-            Application.Current.Shutdown();
+            Close();
         }
 
         private void Preview_Click(object sender, RoutedEventArgs e)
         {
-            SaveSettingsFromUI();
-            _settings.Save();
+            if (!TrySaveSettings()) return;
 
             // Open screensaver preview
             var screensaver = new ScreensaverWindow();

@@ -527,11 +527,19 @@
 
         <!-- Bottom buttons -->
         <Border Grid.Row="2" Background="{StaticResource SecondaryBackgroundBrush}" Padding="16,12">
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                <Button Content="Preview" Click="Preview_Click" Margin="0,0,8,0" />
-                <Button Content="OK" Click="OK_Click" Margin="0,0,8,0" Width="80" />
-                <Button Content="Cancel" Click="Cancel_Click" Width="80" />
-            </StackPanel>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <TextBlock x:Name="SaveStatus" Text="Changes saved automatically."
+                           VerticalAlignment="Center" TextWrapping="Wrap" Margin="0,0,16,0"
+                           AutomationProperties.LiveSetting="Polite" />
+                <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right">
+                    <Button Content="Preview" Click="Preview_Click" Margin="0,0,8,0" />
+                    <Button Content="Close" Click="Close_Click" Width="80" />
+                </StackPanel>
+            </Grid>
         </Border>
     </Grid>
 </Window>

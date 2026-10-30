@@ -144,39 +144,82 @@ namespace AerialViews.Models
             {
                 var appData = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
                 var dir = Path.Combine(appData, "AerialViews");
-                Directory.CreateDirectory(dir);
                 return Path.Combine(dir, "settings.json");
             }
         }
 
         public static ScreensaverSettings Load()
         {
+            return Load(SettingsFilePath);
+        }
+
+        internal static ScreensaverSettings Load(string path)
+        {
             try
             {
-                if (File.Exists(SettingsFilePath))
+                if (File.Exists(path))
                 {
-                    var json = File.ReadAllText(SettingsFilePath);
-                    return JsonConvert.DeserializeObject<ScreensaverSettings>(json) ?? new ScreensaverSettings();
+                    var json = File.ReadAllText(path);
+                    // Replace initialized collections so unchecked filters stay unchecked.
+                    return JsonConvert.DeserializeObject<ScreensaverSettings>(json, new JsonSerializerSettings
+                    {
+                        ObjectCreationHandling = ObjectCreationHandling.Replace
+                    }) ?? new ScreensaverSettings();
                 }
             }
-            catch
+            catch (Exception ex)
             {
-                // If loading fails, return defaults
+                LogSettingsError("load", ex);
             }
             return new ScreensaverSettings();
         }
 
         public void Save()
         {
+            Save(SettingsFilePath);
+        }
+
+        internal void Save(string path)
+        {
+            var tempPath = path + "." + Guid.NewGuid().ToString("N") + ".tmp";
             try
             {
+                Directory.CreateDirectory(Path.GetDirectoryName(Path.GetFullPath(path))!);
                 var json = JsonConvert.SerializeObject(this, Formatting.Indented);
-                File.WriteAllText(SettingsFilePath, json);
+                // Finish and flush the new file before replacing the last saved settings.
+                using (var stream = new FileStream(tempPath, FileMode.CreateNew, FileAccess.Write, FileShare.None))
+                {
+                    using (var writer = new StreamWriter(stream, leaveOpen: true))
+                    {
+                        writer.Write(json);
+                    }
+                    stream.Flush(flushToDisk: true);
+                }
+                File.Move(tempPath, path, overwrite: true);
             }
-            catch
+            catch (Exception ex)
             {
-                // Silently fail if we can't save
+                LogSettingsError("save", ex);
+                throw;
             }
+            finally
+            {
+                try { File.Delete(tempPath); }
+                catch { }
+            }
+        }
+
+        private static void LogSettingsError(string operation, Exception exception)
+        {
+            try
+            {
+                var directory = Path.Combine(
+                    Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "AerialViews");
+                Directory.CreateDirectory(directory);
+                File.AppendAllText(Path.Combine(directory, "debug.log"),
+                    $"[{DateTime.Now:HH:mm:ss.fff}] Settings {operation} failed: {exception}\n");
+            }
+            catch { }
         }
     }
 }
