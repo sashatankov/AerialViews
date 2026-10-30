@@ -10,11 +10,11 @@ none
 false
 TRACE;RELEASE;NET;NET8_0;NETCOREAPP;WINDOWS;WINDOWS7_0;NET5_0_OR_GREATER;NET6_0_OR_GREATER;NET7_0_OR_GREATER;NET8_0_OR_GREATER;NETCOREAPP3_0_OR_GREATER;NETCOREAPP3_1_OR_GREATER;WINDOWS7_0_OR_GREATER
 C:\Users\isash\Documents\Projects\AerialViews\AerialViewsWin\App.xaml
-41071296591
+4-1068324092
 844-411499664
-13532806236
-2101391953283
-UI\OverlayWindow.xaml;UI\ScreensaverWindow.xaml;UI\SecondaryScreensaverWindow.xaml;UI\SettingsWindow.xaml;
+131593804836
+210982598137
+UI\ScreensaverWindow.xaml;UI\SecondaryScreensaverWindow.xaml;UI\SettingsWindow.xaml;UI\VideoOverlay.xaml;
 
 False
 

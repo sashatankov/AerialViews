@@ -871,3 +871,9 @@ C:\Users\isash\Documents\Projects\AerialViews\AerialViewsWin\obj\Release\net8.0-
 C:\Users\isash\Documents\Projects\AerialViews\AerialViewsWin\obj\Release\net8.0-windows\AerialViews.pdb
 C:\Users\isash\Documents\Projects\AerialViews\AerialViewsWin\obj\Release\net8.0-windows\AerialViewsWin.genruntimeconfig.cache
 C:\Users\isash\Documents\Projects\AerialViews\AerialViewsWin\obj\Release\net8.0-windows\ref\AerialViews.dll
+C:\Users\isash\Documents\Projects\AerialViews\AerialViewsWin\obj\Release\net8.0-windows\UI\VideoOverlay.baml
+C:\Users\isash\Documents\Projects\AerialViews\AerialViewsWin\obj\Release\net8.0-windows\UI\SecondaryScreensaverWindow.g.cs
+C:\Users\isash\Documents\Projects\AerialViews\AerialViewsWin\obj\Release\net8.0-windows\UI\VideoOverlay.g.cs
+C:\Users\isash\Documents\Projects\AerialViews\AerialViewsWin\obj\Release\net8.0-windows\GeneratedInternalTypeHelper.g.cs
+C:\Users\isash\Documents\Projects\AerialViews\AerialViewsWin\obj\Release\net8.0-windows\AerialViews_MarkupCompile.lref
+C:\Users\isash\Documents\Projects\AerialViews\AerialViewsWin\obj\Release\net8.0-windows\UI\SecondaryScreensaverWindow.baml

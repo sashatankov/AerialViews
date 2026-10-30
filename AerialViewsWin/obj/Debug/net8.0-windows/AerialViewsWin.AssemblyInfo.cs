@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyDescriptionAttribute("Aerial Views Screensaver for Windows")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+7f9ea1b66f98afd25b20959555df7c1593ad8c2d")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+71713b66ca80b339614c6356cbe2e0d1b500dc13")]
 [assembly: System.Reflection.AssemblyProductAttribute("AerialViews")]
 [assembly: System.Reflection.AssemblyTitleAttribute("AerialViews")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
