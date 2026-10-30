@@ -1,0 +1,4 @@
+﻿  Determining projects to restore...
+  Restored C:\Users\isash\Documents\Projects\AerialViews\AerialViewsWin\AerialViewsWin.csproj (in 1.64 sec).
+  AerialViewsWin -> C:\Users\isash\Documents\Projects\AerialViews\AerialViewsWin\bin\Release\net8.0-windows\win-x64\AerialViews.dll
+  AerialViewsWin -> C:\Users\isash\Documents\Projects\AerialViews\AerialViewsWin\publish\

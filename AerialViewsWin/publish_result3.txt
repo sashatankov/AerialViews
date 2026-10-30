@@ -1,0 +1,4 @@
+﻿  Determining projects to restore...
+  All projects are up-to-date for restore.
+  AerialViewsWin -> C:\Users\isash\Documents\Projects\AerialViews\AerialViewsWin\bin\Release\net8.0-windows\win-x64\AerialViews.dll
+  AerialViewsWin -> C:\Users\isash\Documents\Projects\AerialViews\AerialViewsWin\publish\

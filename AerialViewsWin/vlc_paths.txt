@@ -1,0 +1,11 @@
+﻿C:\Users\isash\Documents\Projects\AerialViews\AerialViewsWin\bin\Debug\net8.0-windows\libvlc
+C:\Users\isash\Documents\Projects\AerialViews\AerialViewsWin\bin\Debug\net8.0-windows\LibVLCSharp.dll
+C:\Users\isash\Documents\Projects\AerialViews\AerialViewsWin\bin\Debug\net8.0-windows\LibVLCSharp.WPF.dll
+C:\Users\isash\Documents\Projects\AerialViews\AerialViewsWin\bin\Debug\net8.0-windows\libvlc\win-x64\libvlc.dll
+C:\Users\isash\Documents\Projects\AerialViews\AerialViewsWin\bin\Debug\net8.0-windows\libvlc\win-x64\libvlc.lib
+C:\Users\isash\Documents\Projects\AerialViews\AerialViewsWin\bin\Debug\net8.0-windows\libvlc\win-x64\libvlccore.dll
+C:\Users\isash\Documents\Projects\AerialViews\AerialViewsWin\bin\Debug\net8.0-windows\libvlc\win-x64\libvlccore.lib
+C:\Users\isash\Documents\Projects\AerialViews\AerialViewsWin\bin\Debug\net8.0-windows\libvlc\win-x86\libvlc.dll
+C:\Users\isash\Documents\Projects\AerialViews\AerialViewsWin\bin\Debug\net8.0-windows\libvlc\win-x86\libvlc.lib
+C:\Users\isash\Documents\Projects\AerialViews\AerialViewsWin\bin\Debug\net8.0-windows\libvlc\win-x86\libvlccore.dll
+C:\Users\isash\Documents\Projects\AerialViews\AerialViewsWin\bin\Debug\net8.0-windows\libvlc\win-x86\libvlccore.lib

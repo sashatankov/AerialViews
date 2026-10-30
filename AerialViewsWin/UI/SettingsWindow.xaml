@@ -1,0 +1,537 @@
+<Window x:Class="AerialViews.UI.SettingsWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Aerial Views - Settings"
+        Width="720" Height="640"
+        WindowStartupLocation="CenterScreen"
+        ResizeMode="NoResize"
+        Background="{StaticResource PrimaryBackgroundBrush}"
+        TextElement.Foreground="{StaticResource TextPrimaryBrush}">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <!-- Header -->
+        <Border Grid.Row="0" Background="{StaticResource SecondaryBackgroundBrush}" Padding="20,16">
+            <StackPanel>
+                <TextBlock Text="✈  Aerial Views" FontSize="22" FontWeight="Bold"
+                           Foreground="{StaticResource TextPrimaryBrush}" />
+                <TextBlock Text="Beautiful aerial screensaver for Windows"
+                           FontSize="12" Foreground="{StaticResource TextSecondaryBrush}" Margin="0,4,0,0" />
+            </StackPanel>
+        </Border>
+
+        <!-- Tab Control -->
+        <TabControl x:Name="MainTabs" Grid.Row="1" Margin="12"
+                    Background="{StaticResource PrimaryBackgroundBrush}"
+                    BorderThickness="0">
+
+            <!-- VIDEO SOURCES TAB -->
+            <TabItem Header="🎬 Sources">
+                <ScrollViewer VerticalScrollBarVisibility="Auto" Padding="12">
+                    <StackPanel>
+                        <!-- Apple Videos -->
+                        <GroupBox Header="Apple Videos (114 videos)">
+                            <StackPanel>
+                                <CheckBox x:Name="AppleEnabled" Content="Enable Apple videos" IsChecked="True" />
+                                <StackPanel Orientation="Horizontal" Margin="0,8,0,0">
+                                    <Label Content="Quality:" Width="80" />
+                                    <ComboBox x:Name="AppleQuality" Width="200">
+                                        <ComboBoxItem Content="1080p H.264" Tag="Video1080H264" />
+                                        <ComboBoxItem Content="1080p SDR" Tag="Video1080SDR" IsSelected="True" />
+                                        <ComboBoxItem Content="1080p HDR" Tag="Video1080HDR" />
+                                        <ComboBoxItem Content="4K SDR" Tag="Video4KSDR" />
+                                        <ComboBoxItem Content="4K HDR" Tag="Video4KHDR" />
+                                    </ComboBox>
+                                </StackPanel>
+                                <TextBlock Text="Scene types:" Margin="0,8,0,4" />
+                                <WrapPanel>
+                                    <CheckBox x:Name="AppleNature" Content="Nature" IsChecked="True" Margin="0,0,12,0" />
+                                    <CheckBox x:Name="AppleBeach" Content="Beach" IsChecked="True" Margin="0,0,12,0" />
+                                    <CheckBox x:Name="AppleCity" Content="City" IsChecked="True" Margin="0,0,12,0" />
+                                    <CheckBox x:Name="AppleSea" Content="Sea" IsChecked="True" Margin="0,0,12,0" />
+                                    <CheckBox x:Name="AppleSpace" Content="Space" IsChecked="True" Margin="0,0,12,0" />
+                                    <CheckBox x:Name="AppleCountryside" Content="Countryside" IsChecked="True" Margin="0,0,12,0" />
+                                </WrapPanel>
+                                <TextBlock Text="Time of day:" Margin="0,8,0,4" />
+                                <WrapPanel>
+                                    <CheckBox x:Name="AppleDay" Content="Day" IsChecked="True" Margin="0,0,12,0" />
+                                    <CheckBox x:Name="AppleNight" Content="Night" IsChecked="True" Margin="0,0,12,0" />
+                                    <CheckBox x:Name="AppleSunset" Content="Sunset" IsChecked="True" Margin="0,0,12,0" />
+                                    <CheckBox x:Name="AppleSunrise" Content="Sunrise" IsChecked="True" Margin="0,0,12,0" />
+                                </WrapPanel>
+                            </StackPanel>
+                        </GroupBox>
+
+                        <!-- Amazon Videos -->
+                        <GroupBox Header="Amazon Videos">
+                            <StackPanel>
+                                <CheckBox x:Name="AmazonEnabled" Content="Enable Amazon videos" IsChecked="True" />
+                                <StackPanel Orientation="Horizontal" Margin="0,8,0,0">
+                                    <Label Content="Quality:" Width="80" />
+                                    <ComboBox x:Name="AmazonQuality" Width="200">
+                                        <ComboBoxItem Content="1080p SDR" Tag="Video1080SDR" IsSelected="True" />
+                                        <ComboBoxItem Content="4K SDR" Tag="Video4KSDR" />
+                                    </ComboBox>
+                                </StackPanel>
+                                <TextBlock Text="Scene types:" Margin="0,8,0,4" />
+                                <WrapPanel>
+                                    <CheckBox x:Name="AmazonNature" Content="Nature" IsChecked="True" Margin="0,0,12,0" />
+                                    <CheckBox x:Name="AmazonBeach" Content="Beach" IsChecked="True" Margin="0,0,12,0" />
+                                    <CheckBox x:Name="AmazonSea" Content="Sea" IsChecked="True" Margin="0,0,12,0" />
+                                    <CheckBox x:Name="AmazonPatterns" Content="Patterns" IsChecked="True" Margin="0,0,12,0" />
+                                </WrapPanel>
+                                <TextBlock Text="Time of day:" Margin="0,8,0,4" />
+                                <WrapPanel>
+                                    <CheckBox x:Name="AmazonDay" Content="Day" IsChecked="True" Margin="0,0,12,0" />
+                                    <CheckBox x:Name="AmazonNight" Content="Night" IsChecked="True" Margin="0,0,12,0" />
+                                    <CheckBox x:Name="AmazonSunset" Content="Sunset" IsChecked="True" Margin="0,0,12,0" />
+                                    <CheckBox x:Name="AmazonSunrise" Content="Sunrise" IsChecked="True" Margin="0,0,12,0" />
+                                </WrapPanel>
+                            </StackPanel>
+                        </GroupBox>
+
+                        <!-- Community 1 (Jetson Creative) -->
+                        <GroupBox Header="Community: Jetson Creative (20 videos)">
+                            <StackPanel>
+                                <CheckBox x:Name="Comm1Enabled" Content="Enable Jetson Creative videos" IsChecked="True" />
+                                <StackPanel Orientation="Horizontal" Margin="0,8,0,0">
+                                    <Label Content="Quality:" Width="80" />
+                                    <ComboBox x:Name="Comm1Quality" Width="200">
+                                        <ComboBoxItem Content="1080p H.264" Tag="Video1080H264" />
+                                        <ComboBoxItem Content="1080p SDR" Tag="Video1080SDR" IsSelected="True" />
+                                        <ComboBoxItem Content="4K SDR" Tag="Video4KSDR" />
+                                    </ComboBox>
+                                </StackPanel>
+                            </StackPanel>
+                        </GroupBox>
+
+                        <!-- Community 2 (Robin Fourcade) -->
+                        <GroupBox Header="Community: Robin Fourcade (18 videos)">
+                            <StackPanel>
+                                <CheckBox x:Name="Comm2Enabled" Content="Enable Robin Fourcade videos" IsChecked="True" />
+                                <StackPanel Orientation="Horizontal" Margin="0,8,0,0">
+                                    <Label Content="Quality:" Width="80" />
+                                    <ComboBox x:Name="Comm2Quality" Width="200">
+                                        <ComboBoxItem Content="1080p H.264" Tag="Video1080H264" />
+                                        <ComboBoxItem Content="1080p SDR" Tag="Video1080SDR" IsSelected="True" />
+                                        <ComboBoxItem Content="4K SDR" Tag="Video4KSDR" />
+                                    </ComboBox>
+                                </StackPanel>
+                            </StackPanel>
+                        </GroupBox>
+                    </StackPanel>
+                </ScrollViewer>
+            </TabItem>
+
+            <!-- OVERLAYS TAB -->
+            <TabItem Header="🏷 Overlays">
+                <ScrollViewer VerticalScrollBarVisibility="Auto" Padding="12">
+                    <StackPanel>
+                        <GroupBox Header="Overlay Positions">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition />
+                                    <RowDefinition />
+                                    <RowDefinition />
+                                    <RowDefinition />
+                                </Grid.RowDefinitions>
+
+                                <StackPanel Grid.Row="0" Grid.Column="0" Margin="0,4">
+                                    <Label Content="Top Left 1:" />
+                                    <ComboBox x:Name="SlotTopLeft1" />
+                                </StackPanel>
+                                <StackPanel Grid.Row="1" Grid.Column="0" Margin="0,4">
+                                    <Label Content="Top Left 2:" />
+                                    <ComboBox x:Name="SlotTopLeft2" />
+                                </StackPanel>
+                                <StackPanel Grid.Row="0" Grid.Column="1" Margin="0,4">
+                                    <Label Content="Top Right 1:" />
+                                    <ComboBox x:Name="SlotTopRight1" />
+                                </StackPanel>
+                                <StackPanel Grid.Row="1" Grid.Column="1" Margin="0,4">
+                                    <Label Content="Top Right 2:" />
+                                    <ComboBox x:Name="SlotTopRight2" />
+                                </StackPanel>
+                                <StackPanel Grid.Row="2" Grid.Column="0" Margin="0,4">
+                                    <Label Content="Bottom Left 1:" />
+                                    <ComboBox x:Name="SlotBottomLeft1" />
+                                </StackPanel>
+                                <StackPanel Grid.Row="3" Grid.Column="0" Margin="0,4">
+                                    <Label Content="Bottom Left 2:" />
+                                    <ComboBox x:Name="SlotBottomLeft2" />
+                                </StackPanel>
+                                <StackPanel Grid.Row="2" Grid.Column="1" Margin="0,4">
+                                    <Label Content="Bottom Right 1:" />
+                                    <ComboBox x:Name="SlotBottomRight1" />
+                                </StackPanel>
+                                <StackPanel Grid.Row="3" Grid.Column="1" Margin="0,4">
+                                    <Label Content="Bottom Right 2:" />
+                                    <ComboBox x:Name="SlotBottomRight2" />
+                                </StackPanel>
+                            </Grid>
+                        </GroupBox>
+
+                        <GroupBox Header="Clock">
+                            <StackPanel Orientation="Horizontal">
+                                <Label Content="Format:" Width="80" />
+                                <ComboBox x:Name="ClockFormat" Width="200">
+                                    <ComboBoxItem Content="System Default" Tag="Default" IsSelected="True" />
+                                    <ComboBoxItem Content="12 Hour" Tag="Hours12" />
+                                    <ComboBoxItem Content="24 Hour" Tag="Hours24" />
+                                </ComboBox>
+                            </StackPanel>
+                        </GroupBox>
+
+                        <GroupBox Header="Date">
+                            <StackPanel>
+                                <StackPanel Orientation="Horizontal">
+                                    <Label Content="Format:" Width="80" />
+                                    <ComboBox x:Name="DateFormat" Width="200">
+                                        <ComboBoxItem Content="Compact" Tag="Compact" IsSelected="True" />
+                                        <ComboBoxItem Content="Long" Tag="Long" />
+                                        <ComboBoxItem Content="Custom" Tag="Custom" />
+                                    </ComboBox>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal" Margin="0,4,0,0">
+                                    <Label Content="Custom:" Width="80" />
+                                    <TextBox x:Name="DateCustom" Width="200" Text="yyyy-MM-dd" />
+                                </StackPanel>
+                            </StackPanel>
+                        </GroupBox>
+
+                        <GroupBox Header="Location / Description">
+                            <StackPanel Orientation="Horizontal">
+                                <Label Content="Style:" Width="80" />
+                                <ComboBox x:Name="DescriptionStyle" Width="200">
+                                    <ComboBoxItem Content="Point of Interest" Tag="POI" IsSelected="True" />
+                                    <ComboBoxItem Content="Title" Tag="Title" />
+                                </ComboBox>
+                            </StackPanel>
+                        </GroupBox>
+
+                        <GroupBox Header="Custom Message">
+                            <StackPanel>
+                                <StackPanel Orientation="Horizontal" Margin="0,4">
+                                    <Label Content="Line 1:" Width="80" />
+                                    <TextBox x:Name="MessageLine1" Width="400" />
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal" Margin="0,4">
+                                    <Label Content="Line 2:" Width="80" />
+                                    <TextBox x:Name="MessageLine2" Width="400" />
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal" Margin="0,4">
+                                    <Label Content="Line 3:" Width="80" />
+                                    <TextBox x:Name="MessageLine3" Width="400" />
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal" Margin="0,4">
+                                    <Label Content="Line 4:" Width="80" />
+                                    <TextBox x:Name="MessageLine4" Width="400" />
+                                </StackPanel>
+                            </StackPanel>
+                        </GroupBox>
+
+                        <GroupBox Header="Countdown">
+                            <StackPanel>
+                                <StackPanel Orientation="Horizontal" Margin="0,4">
+                                    <Label Content="Target:" Width="80" />
+                                    <TextBox x:Name="CountdownTarget" Width="200" ToolTip="e.g. 2025-12-31 23:59:59" />
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal" Margin="0,4">
+                                    <Label Content="Message:" Width="80" />
+                                    <TextBox x:Name="CountdownMessage" Width="300" ToolTip="Shown when countdown reaches zero" />
+                                </StackPanel>
+                            </StackPanel>
+                        </GroupBox>
+
+                        <CheckBox x:Name="AlternatePosition" Content="Alternate overlay positions (reduces burn-in)" IsChecked="True" Margin="0,8" />
+                    </StackPanel>
+                </ScrollViewer>
+            </TabItem>
+
+            <!-- APPEARANCE TAB -->
+            <TabItem Header="🎨 Appearance">
+                <ScrollViewer VerticalScrollBarVisibility="Auto" Padding="12">
+                    <StackPanel>
+                        <GroupBox Header="Transitions">
+                            <StackPanel>
+                                <StackPanel Orientation="Horizontal" Margin="0,4">
+                                    <Label Content="Video fade in (ms):" Width="140" />
+                                    <TextBox x:Name="MediaFadeIn" Width="80" Text="600" />
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal" Margin="0,4">
+                                    <Label Content="Video fade out (ms):" Width="140" />
+                                    <TextBox x:Name="MediaFadeOut" Width="80" Text="800" />
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal" Margin="0,4">
+                                    <Label Content="Overlay fade in (ms):" Width="140" />
+                                    <TextBox x:Name="OverlayFadeIn" Width="80" Text="600" />
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal" Margin="0,4">
+                                    <Label Content="Overlay fade out (ms):" Width="140" />
+                                    <TextBox x:Name="OverlayFadeOut" Width="80" Text="600" />
+                                </StackPanel>
+                            </StackPanel>
+                        </GroupBox>
+
+                        <GroupBox Header="Brightness">
+                            <StackPanel Orientation="Horizontal">
+                                <Label Content="Video brightness:" Width="120" />
+                                <Slider x:Name="VideoBrightness" Minimum="10" Maximum="100" Value="100" Width="200"
+                                        TickFrequency="10" IsSnapToTickEnabled="True" />
+                                <TextBlock x:Name="BrightnessLabel" Text="100%" Margin="8,0,0,0"
+                                           VerticalAlignment="Center" />
+                            </StackPanel>
+                        </GroupBox>
+
+                        <GroupBox Header="Gradients">
+                            <StackPanel>
+                                <CheckBox x:Name="ShowTopGradient" Content="Show top gradient" IsChecked="False" />
+                                <CheckBox x:Name="ShowBottomGradient" Content="Show bottom gradient" IsChecked="True" />
+                            </StackPanel>
+                        </GroupBox>
+
+                        <GroupBox Header="Progress Bar">
+                            <StackPanel>
+                                <StackPanel Orientation="Horizontal" Margin="0,4">
+                                    <Label Content="Position:" Width="80" />
+                                    <ComboBox x:Name="ProgressBarPos" Width="160">
+                                        <ComboBoxItem Content="Disabled" Tag="Disabled" IsSelected="True" />
+                                        <ComboBoxItem Content="Top" Tag="Top" />
+                                        <ComboBoxItem Content="Bottom" Tag="Bottom" />
+                                    </ComboBox>
+                                </StackPanel>
+                            </StackPanel>
+                        </GroupBox>
+
+                        <GroupBox Header="Video Scaling">
+                            <StackPanel Orientation="Horizontal">
+                                <Label Content="Scale mode:" Width="80" />
+                                <ComboBox x:Name="VideoScaleMode" Width="200">
+                                    <ComboBoxItem Content="Scale to Fit" Tag="ScaleToFit" />
+                                    <ComboBoxItem Content="Scale to Fit (with Cropping)" Tag="ScaleToFitWithCropping" IsSelected="True" />
+                                    <ComboBoxItem Content="Stretch" Tag="Stretch" />
+                                </ComboBox>
+                            </StackPanel>
+                        </GroupBox>
+                    </StackPanel>
+                </ScrollViewer>
+            </TabItem>
+
+            <!-- PLAYLIST TAB -->
+            <TabItem Header="🎵 Playlist">
+                <ScrollViewer VerticalScrollBarVisibility="Auto" Padding="12">
+                    <StackPanel>
+                        <GroupBox Header="General">
+                            <StackPanel>
+                                <CheckBox x:Name="ShuffleVideos" Content="Shuffle videos" IsChecked="True" />
+                                <CheckBox x:Name="RemoveDuplicates" Content="Remove duplicate videos" IsChecked="True" />
+                                <StackPanel Orientation="Horizontal" Margin="0,8,0,0">
+                                    <Label Content="Sleep timer (min):" Width="120" />
+                                    <TextBox x:Name="SleepTimer" Width="80" Text="0" ToolTip="0 = disabled" />
+                                </StackPanel>
+                            </StackPanel>
+                        </GroupBox>
+
+                        <GroupBox Header="Audio">
+                            <StackPanel>
+                                <CheckBox x:Name="MuteVideos" Content="Mute videos" IsChecked="True" />
+                                <StackPanel Orientation="Horizontal" Margin="0,4,0,0">
+                                    <Label Content="Volume:" Width="80" />
+                                    <Slider x:Name="VideoVolume" Minimum="0" Maximum="100" Value="100" Width="200"
+                                            TickFrequency="10" IsSnapToTickEnabled="True" />
+                                    <TextBlock x:Name="VolumeLabel" Text="100%" Margin="8,0,0,0"
+                                               VerticalAlignment="Center" />
+                                </StackPanel>
+                            </StackPanel>
+                        </GroupBox>
+
+                        <GroupBox Header="Playback">
+                            <StackPanel>
+                                <StackPanel Orientation="Horizontal" Margin="0,4">
+                                    <Label Content="Speed:" Width="80" />
+                                    <ComboBox x:Name="PlaybackSpeed" Width="120">
+                                        <ComboBoxItem Content="0.5x" Tag="0.5" />
+                                        <ComboBoxItem Content="0.75x" Tag="0.75" />
+                                        <ComboBoxItem Content="1x (Normal)" Tag="1" IsSelected="True" />
+                                        <ComboBoxItem Content="1.25x" Tag="1.25" />
+                                        <ComboBoxItem Content="1.5x" Tag="1.5" />
+                                        <ComboBoxItem Content="2x" Tag="2" />
+                                    </ComboBox>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal" Margin="0,4">
+                                    <Label Content="Max length (s):" Width="100" />
+                                    <TextBox x:Name="MaxVideoLength" Width="80" Text="0" ToolTip="0 = unlimited" />
+                                </StackPanel>
+                            </StackPanel>
+                        </GroupBox>
+
+                        <GroupBox Header="Loop Options">
+                            <StackPanel>
+                                <CheckBox x:Name="LoopUntilSkipped" Content="Loop current video until manually skipped" IsChecked="False" />
+                                <CheckBox x:Name="LoopShortVideos" Content="Loop short videos" IsChecked="False" />
+                                <CheckBox x:Name="RandomStartPos" Content="Start at random position" IsChecked="False" />
+                            </StackPanel>
+                        </GroupBox>
+                    </StackPanel>
+                </ScrollViewer>
+            </TabItem>
+
+            <!-- CACHE TAB -->
+            <TabItem Header="📁 Cache">
+                <ScrollViewer VerticalScrollBarVisibility="Auto" Padding="12">
+                    <StackPanel>
+                        <GroupBox Header="Video Cache">
+                            <StackPanel>
+                                <StackPanel Orientation="Horizontal" Margin="0,4">
+                                    <TextBlock Text="Total cache size: " VerticalAlignment="Center" />
+                                    <TextBlock x:Name="TotalCacheSize" Text="Calculating..." FontWeight="SemiBold"
+                                               VerticalAlignment="Center" />
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal" Margin="0,8,0,0">
+                                    <Button x:Name="OpenCacheFolderBtn" Content="📂 Open Cache Folder"
+                                            Click="OpenCacheFolder_Click" Margin="0,0,8,0" Padding="8,4" />
+                                    <Button x:Name="ClearAllCacheBtn" Content="🗑 Clear All Cache"
+                                            Click="ClearAllCache_Click" Padding="8,4" />
+                                </StackPanel>
+                            </StackPanel>
+                        </GroupBox>
+
+                        <!-- Apple Cache -->
+                        <GroupBox Header="Apple Videos">
+                            <StackPanel>
+                                <StackPanel Orientation="Horizontal" Margin="0,4">
+                                    <TextBlock Text="Cached: " VerticalAlignment="Center" />
+                                    <TextBlock x:Name="AppleCacheInfo" Text="0 files — 0 B"
+                                               VerticalAlignment="Center" Foreground="{StaticResource TextSecondaryBrush}" />
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal" Margin="0,8,0,0">
+                                    <Button x:Name="DownloadAppleBtn" Content="⬇ Download All"
+                                            Click="DownloadApple_Click" Margin="0,0,8,0" Padding="8,4" />
+                                    <Button x:Name="CancelAppleBtn" Content="✕ Cancel"
+                                            Click="CancelApple_Click" Padding="8,4" Visibility="Collapsed" />
+                                    <Button x:Name="ClearAppleBtn" Content="🗑 Clear"
+                                            Click="ClearApple_Click" Padding="8,4" Margin="8,0,0,0" />
+                                </StackPanel>
+                                <ProgressBar x:Name="AppleProgress" Height="18" Margin="0,8,0,0"
+                                             Minimum="0" Maximum="100" Value="0" Visibility="Collapsed" />
+                                <TextBlock x:Name="AppleDownloadStatus" Text="" Margin="0,4,0,0"
+                                           Foreground="{StaticResource TextSecondaryBrush}" Visibility="Collapsed" />
+                            </StackPanel>
+                        </GroupBox>
+
+                        <!-- Amazon Cache -->
+                        <GroupBox Header="Amazon Videos">
+                            <StackPanel>
+                                <StackPanel Orientation="Horizontal" Margin="0,4">
+                                    <TextBlock Text="Cached: " VerticalAlignment="Center" />
+                                    <TextBlock x:Name="AmazonCacheInfo" Text="0 files — 0 B"
+                                               VerticalAlignment="Center" Foreground="{StaticResource TextSecondaryBrush}" />
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal" Margin="0,8,0,0">
+                                    <Button x:Name="DownloadAmazonBtn" Content="⬇ Download All"
+                                            Click="DownloadAmazon_Click" Margin="0,0,8,0" Padding="8,4" />
+                                    <Button x:Name="CancelAmazonBtn" Content="✕ Cancel"
+                                            Click="CancelAmazon_Click" Padding="8,4" Visibility="Collapsed" />
+                                    <Button x:Name="ClearAmazonBtn" Content="🗑 Clear"
+                                            Click="ClearAmazon_Click" Padding="8,4" Margin="8,0,0,0" />
+                                </StackPanel>
+                                <ProgressBar x:Name="AmazonProgress" Height="18" Margin="0,8,0,0"
+                                             Minimum="0" Maximum="100" Value="0" Visibility="Collapsed" />
+                                <TextBlock x:Name="AmazonDownloadStatus" Text="" Margin="0,4,0,0"
+                                           Foreground="{StaticResource TextSecondaryBrush}" Visibility="Collapsed" />
+                            </StackPanel>
+                        </GroupBox>
+
+                        <!-- Comm1 Cache -->
+                        <GroupBox Header="Community: Jetson Creative">
+                            <StackPanel>
+                                <StackPanel Orientation="Horizontal" Margin="0,4">
+                                    <TextBlock Text="Cached: " VerticalAlignment="Center" />
+                                    <TextBlock x:Name="Comm1CacheInfo" Text="0 files — 0 B"
+                                               VerticalAlignment="Center" Foreground="{StaticResource TextSecondaryBrush}" />
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal" Margin="0,8,0,0">
+                                    <Button x:Name="DownloadComm1Btn" Content="⬇ Download All"
+                                            Click="DownloadComm1_Click" Margin="0,0,8,0" Padding="8,4" />
+                                    <Button x:Name="CancelComm1Btn" Content="✕ Cancel"
+                                            Click="CancelComm1_Click" Padding="8,4" Visibility="Collapsed" />
+                                    <Button x:Name="ClearComm1Btn" Content="🗑 Clear"
+                                            Click="ClearComm1_Click" Padding="8,4" Margin="8,0,0,0" />
+                                </StackPanel>
+                                <ProgressBar x:Name="Comm1Progress" Height="18" Margin="0,8,0,0"
+                                             Minimum="0" Maximum="100" Value="0" Visibility="Collapsed" />
+                                <TextBlock x:Name="Comm1DownloadStatus" Text="" Margin="0,4,0,0"
+                                           Foreground="{StaticResource TextSecondaryBrush}" Visibility="Collapsed" />
+                            </StackPanel>
+                        </GroupBox>
+
+                        <!-- Comm2 Cache -->
+                        <GroupBox Header="Community: Robin Fourcade">
+                            <StackPanel>
+                                <StackPanel Orientation="Horizontal" Margin="0,4">
+                                    <TextBlock Text="Cached: " VerticalAlignment="Center" />
+                                    <TextBlock x:Name="Comm2CacheInfo" Text="0 files — 0 B"
+                                               VerticalAlignment="Center" Foreground="{StaticResource TextSecondaryBrush}" />
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal" Margin="0,8,0,0">
+                                    <Button x:Name="DownloadComm2Btn" Content="⬇ Download All"
+                                            Click="DownloadComm2_Click" Margin="0,0,8,0" Padding="8,4" />
+                                    <Button x:Name="CancelComm2Btn" Content="✕ Cancel"
+                                            Click="CancelComm2_Click" Padding="8,4" Visibility="Collapsed" />
+                                    <Button x:Name="ClearComm2Btn" Content="🗑 Clear"
+                                            Click="ClearComm2_Click" Padding="8,4" Margin="8,0,0,0" />
+                                </StackPanel>
+                                <ProgressBar x:Name="Comm2Progress" Height="18" Margin="0,8,0,0"
+                                             Minimum="0" Maximum="100" Value="0" Visibility="Collapsed" />
+                                <TextBlock x:Name="Comm2DownloadStatus" Text="" Margin="0,4,0,0"
+                                           Foreground="{StaticResource TextSecondaryBrush}" Visibility="Collapsed" />
+                            </StackPanel>
+                        </GroupBox>
+                    </StackPanel>
+                </ScrollViewer>
+            </TabItem>
+
+            <!-- ABOUT TAB -->
+            <TabItem Header="ℹ About">
+                <StackPanel Margin="20" VerticalAlignment="Center" HorizontalAlignment="Center">
+                    <TextBlock Text="✈  Aerial Views for Windows" FontSize="24" FontWeight="Bold"
+                               Foreground="{StaticResource TextPrimaryBrush}" HorizontalAlignment="Center" />
+                    <TextBlock Text="Version 1.0.0" FontSize="14"
+                               Foreground="{StaticResource TextSecondaryBrush}" HorizontalAlignment="Center" Margin="0,8,0,0" />
+                    <TextBlock TextWrapping="Wrap" TextAlignment="Center" Margin="0,20,0,0"
+                               Foreground="{StaticResource TextSecondaryBrush}" MaxWidth="450">
+                        A beautiful screensaver for Windows featuring stunning aerial videos
+                        from Apple, Amazon, and community contributors.
+                    </TextBlock>
+                    <TextBlock TextWrapping="Wrap" TextAlignment="Center" Margin="0,16,0,0"
+                               Foreground="{StaticResource TextSecondaryBrush}" MaxWidth="450">
+                        Based on the open-source Aerial Views for Android TV.
+                        Inspired by Apple TV's gorgeous video screensaver.
+                    </TextBlock>
+                    <TextBlock TextWrapping="Wrap" TextAlignment="Center" Margin="0,20,0,0"
+                               Foreground="{StaticResource TextSecondaryBrush}" FontSize="11">
+                        Videos © Apple Inc., Amazon, Jetson Creative, Robin Fourcade
+                    </TextBlock>
+                </StackPanel>
+            </TabItem>
+        </TabControl>
+
+        <!-- Bottom buttons -->
+        <Border Grid.Row="2" Background="{StaticResource SecondaryBackgroundBrush}" Padding="16,12">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                <Button Content="Preview" Click="Preview_Click" Margin="0,0,8,0" />
+                <Button Content="OK" Click="OK_Click" Margin="0,0,8,0" Width="80" />
+                <Button Content="Cancel" Click="Cancel_Click" Width="80" />
+            </StackPanel>
+        </Border>
+    </Grid>
+</Window>
