@@ -38,6 +38,9 @@ namespace AerialViews.Models
         [JsonProperty("url-4K-HDR")]
         public string? Url4KHDR { get; set; }
 
+        [JsonProperty("url-4K-SDR-240FPS")]
+        public string? Url4KSDR240FPS { get; set; }
+
         [JsonProperty("pointsOfInterest")]
         public Dictionary<string, string>? PointsOfInterest { get; set; }
 
@@ -83,7 +86,11 @@ namespace AerialViews.Models
 
         public string GetUrl(VideoQuality quality, AerialMediaSource source)
         {
-            var url = GetUrlForQuality(quality, source) ?? Url1080SDR ?? Url1080H264 ?? "";
+            var url = new[]
+            {
+                GetUrlForQuality(quality, source), Url1080SDR, Url1080H264,
+                source == AerialMediaSource.Apple ? Url4KSDR240FPS : null
+            }.FirstOrDefault(candidate => !string.IsNullOrWhiteSpace(candidate)) ?? "";
             // Apple uses invalid certificate, switch to http
             if (source == AerialMediaSource.Apple)
             {
@@ -102,6 +109,7 @@ namespace AerialViews.Models
             if (!string.IsNullOrEmpty(Url1080HDR)) urls.Add(Path.GetFileNameWithoutExtension(Url1080HDR).ToLower());
             if (!string.IsNullOrEmpty(Url4KSDR)) urls.Add(Path.GetFileNameWithoutExtension(Url4KSDR).ToLower());
             if (!string.IsNullOrEmpty(Url4KHDR)) urls.Add(Path.GetFileNameWithoutExtension(Url4KHDR).ToLower());
+            if (!string.IsNullOrEmpty(Url4KSDR240FPS)) urls.Add(Path.GetFileNameWithoutExtension(Url4KSDR240FPS).ToLower());
             return urls.ToList();
         }
     }

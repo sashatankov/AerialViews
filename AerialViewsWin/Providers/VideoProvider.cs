@@ -7,6 +7,9 @@ namespace AerialViews.Providers
 {
     public class VideoProvider
     {
+        public const string AppleManifestResource = "apple.json";
+        public const string AppleStringsResource = "apple_strings.json";
+
         private readonly string _manifestResource;
         private readonly string _stringsResource;
         private readonly AerialMediaSource _source;
@@ -17,6 +20,11 @@ namespace AerialViews.Providers
             _stringsResource = stringsResource;
             _source = source;
         }
+
+        public int AssetCount => LoadManifest()?.Assets?.Count ?? 0;
+
+        public static VideoProvider CreateApple() =>
+            new(AppleManifestResource, AppleStringsResource, AerialMediaSource.Apple);
 
         public (List<AerialMedia> media, Dictionary<string, Tuple<string, Dictionary<string, string>>> metadata) LoadMedia(SourceSettings settings)
         {
@@ -130,7 +138,7 @@ namespace AerialViews.Providers
 
             var providers = new[]
             {
-                (new VideoProvider("tvos15.json", "tvos15_strings.json", AerialMediaSource.Apple), settings.AppleSource),
+                (VideoProvider.CreateApple(), settings.AppleSource),
                 (new VideoProvider("fireos8.json", "fireos8_strings.json", AerialMediaSource.Amazon), settings.AmazonSource),
                 (new VideoProvider("comm1.json", "comm1_strings.json", AerialMediaSource.Comm1), settings.Comm1Source),
                 (new VideoProvider("comm2.json", "comm2_strings.json", AerialMediaSource.Comm2), settings.Comm2Source),

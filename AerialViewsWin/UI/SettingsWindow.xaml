@@ -35,7 +35,7 @@
                 <ScrollViewer VerticalScrollBarVisibility="Auto" Padding="12">
                     <StackPanel>
                         <!-- Apple Videos -->
-                        <GroupBox Header="Apple Videos (114 videos)">
+                        <GroupBox x:Name="AppleVideosGroup" Header="Apple Videos">
                             <StackPanel>
                                 <CheckBox x:Name="AppleEnabled" Content="Enable Apple videos" IsChecked="True" />
                                 <StackPanel Orientation="Horizontal" Margin="0,8,0,0">
@@ -48,6 +48,9 @@
                                         <ComboBoxItem Content="4K HDR" Tag="Video4KHDR" />
                                     </ComboBox>
                                 </StackPanel>
+                                <TextBlock Text="Some scenes are available only in 4K SDR and use that format at any quality setting."
+                                           TextWrapping="Wrap" FontSize="12" Margin="0,4,0,0"
+                                           Foreground="{StaticResource TextSecondaryBrush}" />
                                 <TextBlock Text="Scene types:" Margin="0,8,0,4" />
                                 <WrapPanel>
                                     <CheckBox x:Name="AppleNature" Content="Nature" IsChecked="True" Margin="0,0,12,0" />
