@@ -33,6 +33,7 @@
 
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml" />
+    <InternalsVisibleTo Include="AerialViewsWin.Tests" />
   </ItemGroup>
 
 </Project>
